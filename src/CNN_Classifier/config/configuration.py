@@ -1,6 +1,7 @@
 from CNN_Classifier.constants import *
 from CNN_Classifier.utils.common import read_yaml, create_directories
-from CNN_Classifier.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig
+from CNN_Classifier.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig, PrepareCallbacksConfig
+
 
 class ConfigurationManager:
     def __init__(self,
@@ -11,6 +12,7 @@ class ConfigurationManager:
         self.params = read_yaml(params_filepath) # assigns dict from param.yaml
         
         create_directories([self.config.artifacts_root]) #Creating artifact folder in root directory
+
         
     def get_data_ingestion_config(self) -> DataIngestionConfig:
         config = self.config.data_ingestion
@@ -47,3 +49,20 @@ class ConfigurationManager:
         )
         
         return prepare_base_model_config
+    
+    
+    def get_prepare_callback_config(self) -> PrepareCallbacksConfig:
+        config = self.config.prepare_callbacks
+              
+        prepare_callback_config = PrepareCallbacksConfig(
+            root_dir= Path(config.root_dir),
+            tensorboard_root_log_dir=Path(config.tensorboard_root_log_dir),
+            checkpoint_model_filepath=Path(config.checkpoint_model_filepath)
+        )
+        
+        create_directories([
+            Path(config.checkpoint_model_filepath),
+            Path(config.tensorboard_root_log_dir)
+        ])
+        
+        return prepare_callback_config
