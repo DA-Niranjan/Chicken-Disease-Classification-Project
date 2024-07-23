@@ -27,7 +27,7 @@ class ModelTrainingPipeline:
 
 
 
-
+#For dvc.yaml file
 if __name__ == '__main__':
     try:
         logger.info(f"*******************")
